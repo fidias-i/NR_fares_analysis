@@ -45,3 +45,9 @@ fares['ticket_code'] = fares[0].str[9:12]
 fares['restriction_code'] = fares[0].str[20:22]
 
 fares.to_csv(f"fares.csv", index=False)
+
+# Joining fares and flow
+flows_fares = pd.merge(flows, fares, on="flow_ID", how="left")
+flows_fares['OD_flow'] = flows_fares['origin_code'] + "-" + flows_fares['dest_code']
+
+flows_fares.to_csv(f"flows_fares.csv", index=False)
