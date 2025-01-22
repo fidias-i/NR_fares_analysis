@@ -6,6 +6,7 @@ from datetime import datetime
 
 _dir = os.listdir('fares')
 download_name = _dir[0][:-4]
+download_date = '2025 Jan'
 
 
  # Module 1 - Raw Files
@@ -35,12 +36,13 @@ flows['publication_ind'] = flows[0].str[41]
 flows['flow_ID'] = flows[0].str[42:49]
 flows.drop(columns=[0], inplace=True)
 
-flows.to_csv(f"flows.csv", index=False)
+flows.to_csv(f"flows_{download_date}.csv", index=False)
 
 # Fares file
 fares['update_marker'] = fares[0].str[0]
 fares['flow_ID'] = fares[0].str[2:9]
 fares['fare'] = pd.to_numeric(fares[0].str[12:20])
+
 fares['ticket_code'] = fares[0].str[9:12]
 fares['restriction_code'] = fares[0].str[20:22]
 
@@ -50,4 +52,4 @@ fares.to_csv(f"fares.csv", index=False)
 flows_fares = pd.merge(flows, fares, on="flow_ID", how="left")
 flows_fares['OD_flow'] = flows_fares['origin_code'] + "-" + flows_fares['dest_code']
 
-flows_fares.to_csv(f"flows_fares.csv", index=False)
+flows_fares.to_csv(f"flows_fares_{download_date}.csv", index=False)
